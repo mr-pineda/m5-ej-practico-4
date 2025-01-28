@@ -37,14 +37,23 @@ const days = ['Lunes', 'Martes', 'Míercoles', 'Jueves', 'Viernes'];
 const Appointment = () => {
   const [doctorsData, setDoctorsData] = useState<doctor[]>([]); //Estado para los datos de los Doctores
   const [currentDoctor, setCurrentDoctor] = useState<doctor | null>(null);
+  const [serviceList, setServiceList] = useState<string[]>([]);
+  const [currentService, setCurrentService] = useState<string | null>(null);
   const [hour, setHour] = useState(hours[0]);
   const [day, setDay] = useState(days[0]);
   const [doctorQuery, setDoctorQuery] = useState('');
+  const [serviceQuery, setServiceQuery] = useState('');
   const [dayQuery, setDayQuery] = useState('');
   const [hourQuery, setHourQuery] = useState('');
   const [doctorHover, setDoctorHover] = useState(false);
+  const [serviceHover, setServiceHover] = useState(false);
   const [hourHover, setHourHover] = useState(false);
   const [dayHover, setDayHover] = useState(false);
+
+  const doctorInputRef = useRef<HTMLInputElement>(null);
+  const serviceInputRef = useRef<HTMLInputElement>(null);
+  const hourInputRef = useRef<HTMLInputElement>(null);
+  const dayInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchDoctorsData = async () => {
@@ -55,13 +64,88 @@ const Appointment = () => {
     };
 
     fetchDoctorsData(); //Ejecuta la función al montar el componente
-  }, []); // El userEffetc se ejecuta solo una vez cuando el componente se monta
+  }, []); // El useEffetc se ejecuta solo una vez cuando el componente se monta
+
+  useEffect(() => {
+    doctorInputRef.current?.focus();
+    doctorInputRef.current?.addEventListener('mouseenter', () => {
+      setDoctorHover(true);
+    });
+    doctorInputRef.current?.addEventListener('mouseleave', () => {
+      setDoctorHover(false);
+    });
+
+    hourInputRef.current?.addEventListener('mouseenter', () => {
+      setHourHover(true);
+    });
+    hourInputRef.current?.addEventListener('mouseleave', () => {
+      setHourHover(false);
+    });
+
+    dayInputRef.current?.addEventListener('mouseenter', () => {
+      setDayHover(true);
+    });
+    dayInputRef.current?.addEventListener('mouseleave', () => {
+      setDayHover(false);
+    });
+
+    serviceInputRef.current?.addEventListener('mouseenter', () => {
+      console.log('service hover');
+      setServiceHover(true);
+    });
+    serviceInputRef.current?.addEventListener('mouseleave', () => {
+      setServiceHover(false);
+    });
+
+    return () => {
+      doctorInputRef.current?.removeEventListener('mouseenter', () => {
+        setDoctorHover(true);
+      });
+      doctorInputRef.current?.removeEventListener('mouseleave', () => {
+        setDoctorHover(false);
+      });
+
+      hourInputRef.current?.removeEventListener('mouseenter', () => {
+        setHourHover(true);
+      });
+      hourInputRef.current?.removeEventListener('mouseleave', () => {
+        setHourHover(false);
+      });
+
+      dayInputRef.current?.removeEventListener('mouseenter', () => {
+        setDayHover(true);
+      });
+      dayInputRef.current?.removeEventListener('mouseleave', () => {
+        setDayHover(false);
+      });
+
+      serviceInputRef.current?.removeEventListener('mouseenter', () => {
+        setServiceHover(true);
+      });
+      serviceInputRef.current?.removeEventListener('mouseleave', () => {
+        setServiceHover(false);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (currentDoctor === null || currentDoctor.services.length === 0) return;
+    setServiceList(['Consulta General', ...currentDoctor.services]);
+    setCurrentService(currentDoctor.services[0]);
+  }, [currentDoctor]);
 
   const filteredDoctor =
     doctorQuery === ''
       ? doctorsData
       : doctorsData.filter((doctor) => {
           return doctor.name.toLowerCase().includes(doctorQuery.toLowerCase());
+        });
+
+  const filteredService =
+    serviceQuery === ''
+      ? serviceList
+      : serviceList?.filter((service) => {
+          return service.toLowerCase().includes(serviceQuery.toLowerCase());
         });
 
   const filteredDay =
@@ -77,71 +161,6 @@ const Appointment = () => {
       : hours.filter((hour) => {
           return hour.toLowerCase().includes(hourQuery.toLowerCase());
         });
-
-  const doctorInputRef = useRef<HTMLInputElement>(null);
-  const hourInputRef = useRef<HTMLInputElement>(null);
-  const dayInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (
-      !doctorInputRef.current ||
-      !dayInputRef.current ||
-      !hourInputRef.current
-    )
-      return;
-
-    doctorInputRef.current.focus();
-    doctorInputRef.current.addEventListener('mouseenter', () => {
-      setDoctorHover(true);
-    });
-    doctorInputRef.current.addEventListener('mouseleave', () => {
-      setDoctorHover(false);
-    });
-
-    hourInputRef.current.addEventListener('mouseenter', () => {
-      setHourHover(true);
-    });
-    hourInputRef.current.addEventListener('mouseleave', () => {
-      setHourHover(false);
-    });
-
-    dayInputRef.current.addEventListener('mouseenter', () => {
-      setDayHover(true);
-    });
-    dayInputRef.current.addEventListener('mouseleave', () => {
-      setDayHover(false);
-    });
-
-    return () => {
-      if (
-        !doctorInputRef.current ||
-        !dayInputRef.current ||
-        !hourInputRef.current
-      )
-        return;
-
-      doctorInputRef.current.removeEventListener('mouseenter', () => {
-        setDoctorHover(true);
-      });
-      doctorInputRef.current.removeEventListener('mouseleave', () => {
-        setDoctorHover(false);
-      });
-
-      hourInputRef.current.removeEventListener('mouseenter', () => {
-        setHourHover(true);
-      });
-      hourInputRef.current.removeEventListener('mouseleave', () => {
-        setHourHover(false);
-      });
-
-      dayInputRef.current.removeEventListener('mouseenter', () => {
-        setDayHover(true);
-      });
-      dayInputRef.current.removeEventListener('mouseleave', () => {
-        setDayHover(false);
-      });
-    };
-  }, []);
 
   return (
     <>
@@ -201,9 +220,48 @@ const Appointment = () => {
             </Combobox>
           </div>
           <div>
-            {currentDoctor !== null && (
-              <h1>Servicios de {currentDoctor.specialty}</h1>
-            )}
+            <div className='mb-5'>
+              <h1>
+                {currentDoctor
+                  ? `Elija un servicio de ${currentDoctor.specialty}`
+                  : 'No hay un doctor seleccionado'}
+              </h1>
+              <Combobox
+                value={!currentDoctor ? '-----' : currentService}
+                onChange={(value) => setCurrentService(value as string)}
+                onClose={() => setServiceQuery('')}
+                disabled={!currentDoctor}
+              >
+                <div className='relative'>
+                  <ComboboxInput
+                    className={`w-full rounded-lg border-2 border-black py-1.5 pl-3 pr-8 text-sm/6 text-black focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 ${!currentDoctor ? 'bg-gray-300' : serviceHover ? 'bg-sky-100' : 'bg-white/50'}`}
+                    ref={serviceInputRef}
+                    displayValue={(service: string) => service}
+                    onChange={(event) => setServiceQuery(event.target.value)}
+                  />
+                  <ComboboxButton className='group absolute inset-y-0 right-0 px-2.5'>
+                    <ChevronDownIcon className='size-4 fill-black' />
+                  </ComboboxButton>
+                </div>
+
+                <ComboboxOptions
+                  anchor='bottom'
+                  transition
+                  className='w-[var(--input-width)] rounded-xl border border-white/5 bg-white p-1 transition duration-100 ease-in [--anchor-gap:var(--spacing-1)] empty:invisible data-[leave]:data-[closed]:opacity-0'
+                >
+                  {filteredService.map((service, idx) => (
+                    <ComboboxOption
+                      key={idx}
+                      value={service}
+                      className='group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10'
+                    >
+                      <CheckIcon className='invisible size-4 fill-black group-data-[selected]:visible' />
+                      <div className='text-sm/6 text-black'>{service}</div>
+                    </ComboboxOption>
+                  ))}
+                </ComboboxOptions>
+              </Combobox>
+            </div>
           </div>
           <div className='mb-5 flex flex-row'>
             <div className='mr-2'>
@@ -286,7 +344,7 @@ const Appointment = () => {
               console.log(
                 `Reserva de Hora con Doctor: ${currentDoctor?.name}
         Día: ${day}
-        Hora: ${hour}`
+        Hora: ${hour}`,
               )
             }
           >

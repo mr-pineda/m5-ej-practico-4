@@ -40,14 +40,14 @@ Trabajo práctico para desarrollar una página web de hospital que debe contener
 2. Integración de TypeScript en Componentes Clave (2 puntos)
 
    - [ ] Refactoriza los componentes principales de la aplicación utilizando TypeScript:
-     - [ ] Define correctamente los tipos de datos, props, y estados dentro de los componentes.
-     - [ ] Usa TypeScript para mejorar la estructura y el tipado del código, evitando errores en tiempo de ejecución.
+     - [x] Define correctamente los tipos de datos, props, y estados dentro de los componentes.
+     - [x] Usa TypeScript para mejorar la estructura y el tipado del código, evitando errores en tiempo de ejecución.
      - [ ] Aplica interfaces y clases para modelar correctamente los datos de los usuarios y del sistema.
 
 3. Mejoras en la Seguridad del Front-End (2 puntos)
 
    - [ ] Implementa medidas de seguridad en la aplicación React:
-     - [ ] Utiliza React Router DOM para proteger rutas y permitir el acceso solo a usuarios autenticados.
+     - [x] Utiliza React Router DOM para proteger rutas y permitir el acceso solo a usuarios autenticados.
      - [ ] Protege las peticiones a la API mediante JWT para asegurar que solo usuarios con permisos puedan acceder a los datos sensibles.
      - [ ] Asegura la validación de formularios para evitar XSS y otros ataques comunes.
      - [ ] Integra encriptación para proteger la información confidencial antes de enviarla al servidor.
@@ -56,4 +56,4 @@ Trabajo práctico para desarrollar una página web de hospital que debe contener
    - [ ] Utiliza Hooks como useState y useEffect para gestionar el estado y los efectos secundarios dentro de la aplicación:
      - [ ] Implementa un Hook personalizado que maneje la lógica repetitiva de la aplicación, como la autenticación o la gestión de formularios.
      - [ ] Asegura que los errores durante las peticiones a la API o en la interfaz se gestionen correctamente, mostrando mensajes al usuario en caso de error.
-     - [ ] Optimiza el rendimiento de la aplicación utilizando dependencias correctamente en useEffect y evitando renderizados innecesarios.
+     - [x] Optimiza el rendimiento de la aplicación utilizando dependencias correctamente en useEffect y evitando renderizados innecesarios.
