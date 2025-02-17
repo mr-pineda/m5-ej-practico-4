@@ -54,6 +54,6 @@ Trabajo práctico para desarrollar una página web de hospital que debe contener
 
 4. Optimización con Hooks y Manejo de Errores (1 punto)
    - [ ] Utiliza Hooks como useState y useEffect para gestionar el estado y los efectos secundarios dentro de la aplicación:
-     - [ ] Implementa un Hook personalizado que maneje la lógica repetitiva de la aplicación, como la autenticación o la gestión de formularios.
+     - [x] Implementa un Hook personalizado que maneje la lógica repetitiva de la aplicación, como la autenticación o la gestión de formularios.
      - [ ] Asegura que los errores durante las peticiones a la API o en la interfaz se gestionen correctamente, mostrando mensajes al usuario en caso de error.
      - [x] Optimiza el rendimiento de la aplicación utilizando dependencias correctamente en useEffect y evitando renderizados innecesarios.
